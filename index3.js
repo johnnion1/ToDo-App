@@ -7,17 +7,18 @@
     //todos are also objects with methods (see previous version)
 
 
-function myProjects() {
-        let projects = []:
+const myProjects = (function () {
+        let projects = [];
         const project = {
                 init: function (title) {
                         this.title = title;
                         this.todos = [];
                         return this;
-                }
+                },
                 createTodoItem: function (tas, desc, dDate) {
-                        const todoItem = Object.create(todoItem).init(tas, desc, dDate)
-                }
+                        const todoItem = Object.create(toDoItem).init(tas, desc, dDate)
+                        this.todos.push(todoItem)
+                },
         }
 
         const toDoItem = {
@@ -25,19 +26,32 @@ function myProjects() {
                         this.task = task;
                         this.description = description;
                         this.dueDate = dueDate;
-                       // this.priority = projects.length + 1;
+                        // this.priority = projects.length + 1;
                         return this;
-                }
-                alterTask: (newTask) => { this.task = newTask };
-                alterDescription: (newDescription) => { this.description = newDescription };
-                alterDueDate: (newDueDate) => { this.dueDate = newDueDate };
-                setPriority: (newPriority) => { this.priority = newPriority };     
+                },
+                alterTask: function (newTask) { this.task = newTask },
+                alterDescription: function (newDescription) { this.description = newDescription },
+                alterDueDate: function (newDueDate) { this.dueDate = newDueDate },
+                setPriority: function (newPriority) { this.priority = newPriority },
         }
         
         const createProject = function (title) {
-                const newProject = Object.create(project).init(title);
-                projects.push(newProject)
+                return Object.create(project).init(title);
         }
-        createProject('Default Project');
-        return {createProject }
+        const addProject = (title) => {
+                const newProject = createProject(title);
+                projects.push(newProject);
+        }
+        const getProjects = () => projects;
+       // const getProject = (project) => projects[project];
+
+        //to see what projects looks like after certain actions, wont be needed after UI is done!
+        const printProject = (project) => { console.log(getProject(project)) /* console.table? */ };
+        
+        addProject('Default Project');
+        return { addProject, getProjects, printProject }
+})();
+ 
+function projectController() {
+        const projects = myProjects.getProjects();
  }
